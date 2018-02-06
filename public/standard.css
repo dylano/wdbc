@@ -1,4 +1,4 @@
-body {
+xbody {
     background: black;
     color: green;
 }
@@ -9,4 +9,9 @@ a:visited {
 
 .breathe {
     padding-left: 2.5rem;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
 }

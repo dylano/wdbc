@@ -11,6 +11,12 @@ app.set("view engine", "ejs");
 // app data
 var campgrounds = [
     {name: 'Marin Ranch', image: 'https://farm4.staticflickr.com/3113/3159052463_1f46581d53.jpg'}, 
+    {name: 'Jones Gulch', image: 'https://farm9.staticflickr.com/8086/8352159814_4cb97a7fda.jpg'},
+    {name: 'Marin Ranch', image: 'https://farm4.staticflickr.com/3113/3159052463_1f46581d53.jpg'}, 
+    {name: 'Jones Gulch', image: 'https://farm9.staticflickr.com/8086/8352159814_4cb97a7fda.jpg'},
+    {name: 'Marin Ranch', image: 'https://farm4.staticflickr.com/3113/3159052463_1f46581d53.jpg'}, 
+    {name: 'Jones Gulch', image: 'https://farm9.staticflickr.com/8086/8352159814_4cb97a7fda.jpg'},
+    {name: 'Marin Ranch', image: 'https://farm4.staticflickr.com/3113/3159052463_1f46581d53.jpg'}, 
     {name: 'Jones Gulch', image: 'https://farm9.staticflickr.com/8086/8352159814_4cb97a7fda.jpg'}
 ]
 
