@@ -15,3 +15,12 @@ a:visited {
     display: flex;
     flex-wrap: wrap;
 }
+
+.siteform {
+    width: 30%;
+    margin: 2.0rem auto;
+}
+
+.center {
+    text-align: center;
+}
