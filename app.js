@@ -14,7 +14,8 @@ app.set("view engine", "ejs");
 mongoose.connect("mongodb://localhost/yelpcamp");
 var campSchema = mongoose.Schema({
     name: String,
-    image: String
+    image: String, 
+    description: String
 });
 
 var Camp = mongoose.model("Camp", campSchema);
@@ -27,7 +28,7 @@ app.get('/campgrounds', function(req, res) {
     // Get all campsites
     Camp.find()
         .then(function(camps){
-            res.render('campgrounds', {campgrounds: camps});
+            res.render('index', {campgrounds: camps});
         })
         .catch(function(err){
             console.log('Find error: ' + err);
@@ -38,13 +39,24 @@ app.get('/campgrounds/new', function(req, res){
     res.render("new.ejs");
 });
 
+app.get('/campgrounds/:id', function(req, res){
+    var camp = Camp.findById(req.params.id)
+        .then(function(camp){
+            res.render("show", {campground: camp});
+        })
+        .catch(function(err){
+            console.log('Find error: ' + err);
+        });
+});
+
 app.post('/campgrounds', function(req, res){
     var newName = req.body.siteName;
     var newImageURL = req.body.siteImage;
+    var newDescription = req.body.description;
 
-    if(newName && newImageURL) {
+    if(newName && newImageURL && newDescription) {
         Camp.create({
-            name: newName, image: newImageURL
+            name: newName, image: newImageURL, description: newDescription
         })
         .then(function(camp){
             console.log('new camp: ' + camp);

@@ -1,0 +1,21 @@
+<% include partials/header %>
+
+<div class="container">
+    <div class="jumbotron">
+        <h1><%= campground.name %></h1>
+    </div>
+    <div>
+        <img src=<%=campground.image%>
+    </div>
+    <p>
+        <% if(campground.description) { %>
+            <%= campground.description %>
+        <% } else { %> 
+            (Description needed)
+        <% } %>
+    </p>
+</div>
+
+
+
+<% include partials/footer %>
