@@ -1,16 +1,3 @@
-xbody {
-    background: black;
-    color: green;
-}
-
-a:visited {
-    color: yellowgreen;
-}
-
-.breathe {
-    padding-left: 2.5rem;
-}
-
 .row {
     display: flex;
     flex-wrap: wrap;
