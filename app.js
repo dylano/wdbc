@@ -9,17 +9,12 @@ var PORT = 3000;
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
-
-// app data
 mongoose.connect("mongodb://localhost/yelpcamp");
-var campSchema = mongoose.Schema({
-    name: String,
-    image: String, 
-    description: String
-});
 
-var Camp = mongoose.model("Camp", campSchema);
+// Models
+var Camp = require('./models/camp');
 
+// ROUTES
 app.get('/', function(req, res) {
     res.render('landing');
 });
