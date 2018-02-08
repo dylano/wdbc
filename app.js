@@ -1,8 +1,9 @@
-var express = require('express');
-var app = express();
-var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
-
+var express = require('express'),
+     bodyParser = require('body-parser'),
+     mongoose = require('mongoose'),
+     seedDB = require('./seed.js'),
+     app = express();
+     
 var PORT = 3000;
 
 // app config
@@ -13,6 +14,8 @@ mongoose.connect("mongodb://localhost/yelpcamp");
 
 // Models
 var Camp = require('./models/camp');
+
+seedDB();
 
 // ROUTES
 app.get('/', function(req, res) {
@@ -35,7 +38,7 @@ app.get('/campgrounds/new', function(req, res){
 });
 
 app.get('/campgrounds/:id', function(req, res){
-    var camp = Camp.findById(req.params.id)
+    var camp = Camp.findById(req.params.id).populate('comments').exec()
         .then(function(camp){
             res.render("show", {campground: camp});
         })
@@ -64,6 +67,6 @@ app.post('/campgrounds', function(req, res){
 });
 
 app.listen(PORT, function() {
-    console.log("Now yelping on " + PORT + "...");
+    console.log("Now camping on " + PORT + "...");
 });
 
