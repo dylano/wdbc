@@ -1,0 +1,36 @@
+<% include ../partials/header %>
+
+<div class="container">
+    <% if(!campground) { %>
+        <h4>Campground does not appear to exist. <a href="/campgrounds/">Return to List</a></h4>
+    <% } else { %>
+    <div class="jumbotron">
+        <h1><%= campground.name %></h1>
+    </div>
+    <div>
+        <img src=<%=campground.image%>
+    </div>
+    <p>
+        <% if(campground.description) { %>
+            <%= campground.description %>
+        <% } else { %> 
+            (Description needed)
+        <% } %>
+    </p>
+    <h3>Comments</h3>
+    <div>
+        <ul>
+            <% campground.comments.forEach(function(comment) { %>
+                <li><%= comment.text %> <em>(<%=comment.author%>)</em></li>
+            <% }) %>
+        </ul>
+    </div>
+    <p></p>
+    <div>
+        <a href="/campgrounds/<%=campground._id%>/comments/new" class="btn btn-primary">Add a Comment</a>
+    </div>
+
+    <% } %>
+</div>
+
+<% include ../partials/footer %>
