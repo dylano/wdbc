@@ -1,7 +1,3 @@
-body {
-    background: black;
-    color: green;
-}
 
 .row {
     display: flex;
@@ -15,4 +11,12 @@ body {
 
 .center {
     text-align: center;
+}
+
+.thumbnail img {
+    width: 100%;
+}
+
+.thumbnail {
+    padding: 0;
 }

@@ -7,7 +7,7 @@ var express = require('express'),
 var PORT = 3000;
 
 // app config
-app.use(express.static("public"));
+app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 mongoose.connect("mongodb://localhost/yelpcamp");

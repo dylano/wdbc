@@ -1,36 +1,55 @@
 <% include ../partials/header %>
 
-<div class="container">
-    <% if(!campground) { %>
-        <h4>Campground does not appear to exist. <a href="/campgrounds/">Return to List</a></h4>
-    <% } else { %>
-    <div class="jumbotron">
-        <h1><%= campground.name %></h1>
-    </div>
-    <div>
-        <img src=<%=campground.image%>
-    </div>
-    <p>
-        <% if(campground.description) { %>
-            <%= campground.description %>
-        <% } else { %> 
-            (Description needed)
-        <% } %>
-    </p>
-    <h3>Comments</h3>
-    <div>
-        <ul>
-            <% campground.comments.forEach(function(comment) { %>
-                <li><%= comment.text %> <em>(<%=comment.author%>)</em></li>
-            <% }) %>
-        </ul>
-    </div>
-    <p></p>
-    <div>
-        <a href="/campgrounds/<%=campground._id%>/comments/new" class="btn btn-primary">Add a Comment</a>
+    <div class="container">
+        <% if(!campground) { %>
+            <h4>Campground does not appear to exist. <a href="/campgrounds/">Return to List</a></h4>
+            <% } else { %>
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <p class="lead">StUtS</p>
+                        <div class="list-group">
+                            <li class="list-group-item active">Summary</li>
+                            <li class="list-group-item">Location</li>
+                            <li class="list-group-item">Reserve</li>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="thumbnail">
+                            <img class="img-responsive" src=<%=campground.image%>>
+                            <div class="caption">
+                                <h4 class="pull-right">$25/night</h4>
+                                <h4>
+                                    <%= campground.name %>
+                                </h4>
+                                <p>
+                                    <%= campground.description %>
+                                </p>
+                            </div>
+                            <div class="well">
+                                <div class="text-right">
+                                    <a href="/campgrounds/<%=campground._id%>/comments/new" class="btn btn-primary">Add a Comment</a>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <% campground.comments.forEach(function(comment) { %>
+                                            <strong><%=comment.author%></strong>
+                                            <span class="pull-right">3 weeks ago</span>
+                                            <p>
+                                                <%= comment.text %>
+                                            </p>
+                                            <% }) %>
+                                    </div>
+                                </div>
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <% } %>
     </div>
 
-    <% } %>
-</div>
-
-<% include ../partials/footer %>
+    <% include ../partials/footer %>
