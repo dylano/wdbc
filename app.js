@@ -52,3 +52,8 @@ app.listen(PORT, function() {
     console.log("Now camping on " + PORT + "...");
 });
 
+module.exports = {
+    sanityTest: function() {
+        return true;
+    }
+}
