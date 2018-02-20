@@ -32,10 +32,14 @@ router.post('/campgrounds', isLoggedIn, function(req, res){
     var newName = req.body.siteName;
     var newImageURL = req.body.siteImage;
     var newDescription = req.body.description;
+    var newAuthor = {
+        id: req.user._id,
+        username: req.user.username
+    }
 
     if(newName && newImageURL && newDescription) {
         Camp.create({
-            name: newName, image: newImageURL, description: newDescription
+            name: newName, image: newImageURL, description: newDescription, author: newAuthor
         })
         .then(function(camp){
             console.log('new camp: ' + camp);
