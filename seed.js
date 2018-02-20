@@ -18,6 +18,7 @@ function seedDB() {
         console.log('Removing comments');
         Comment.remove({});
     })
+    // -- camp creation removed for now, need to set current user context first
     // .then(function() {
     //     seedCamps.forEach(function (seed) {
     //         Camp.create(seed)
