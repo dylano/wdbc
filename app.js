@@ -5,15 +5,21 @@ var express = require('express'),
      expressSession = require('express-session'),
      passport = require('passport'),
      LocalStrategy = require('passport-local'),
-     passportLocalMongoose = require('passport-local-mongoose');
+     passportLocalMongoose = require('passport-local-mongoose'),
+     methodOverride = require('method-override');
      
+
 // app config
-var PORT = process.env.PORT;
+var PORT = process.env.PORT || 3000;
 app = express();
 app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(methodOverride("_method"));
 app.set("view engine", "ejs");
-mongoose.connect("mongodb://localhost/stuts");
+
+var dbconnect = process.env.MONGO_CONNECT || "mongodb://localhost/stuts";
+console.log("Connecting to Mongo: " + dbconnect);
+mongoose.connect(dbconnect);
 
 // Auth / Passport config
 var User = require('./models/user');
