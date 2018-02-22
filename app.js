@@ -8,7 +8,7 @@ var express = require('express'),
      passportLocalMongoose = require('passport-local-mongoose');
      
 // app config
-var PORT = 3000;
+var PORT = process.env.PORT;
 app = express();
 app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.urlencoded({extended: true}));
