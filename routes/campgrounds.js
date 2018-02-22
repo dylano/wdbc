@@ -67,6 +67,17 @@ router.put('/campgrounds/:id', isLoggedIn, function(req, res){
         });
 });
 
+router.delete('/campgrounds/:id', isLoggedIn, function(req, res){
+    Camp.findByIdAndRemove(req.params.id)
+        .then(function(camp){
+            res.redirect('/campgrounds');
+        })
+        .catch(function(err){
+            console.log('Remove error: ' + err);
+            res.redirect('/campgrounds');
+        })
+});
+
 function isLoggedIn (req, res, next) {
     if(req.isAuthenticated()) {
         return next();
