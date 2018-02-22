@@ -29,18 +29,13 @@ router.get('/campgrounds/:id', function(req, res){
 });
 
 router.post('/campgrounds', isLoggedIn, function(req, res){
-    var newName = req.body.siteName;
-    var newImageURL = req.body.siteImage;
-    var newDescription = req.body.description;
-    var newAuthor = {
+    var newCamp = req.body.camp;
+    newCamp.author = {
         id: req.user._id,
         username: req.user.username
     }
 
-    if(newName && newImageURL && newDescription) {
-        Camp.create({
-            name: newName, image: newImageURL, description: newDescription, author: newAuthor
-        })
+    Camp.create(newCamp)
         .then(function(camp){
             console.log('new camp: ' + camp);
             res.redirect('/campgrounds');
@@ -48,7 +43,28 @@ router.post('/campgrounds', isLoggedIn, function(req, res){
         .catch(function(err){
             console.log('Camp save error: ' + err);
         });
-    }
+});
+
+router.get('/campgrounds/:id/edit', isLoggedIn, function(req, res){
+    var camp = Camp.findById(req.params.id)
+        .then(function(camp){
+            res.render("campgrounds/edit", {campground: camp});
+        })
+        .catch(function(err){
+            console.log('Find error: ' + err);
+            res.redirect('/campgrounds');
+        });
+});
+
+router.put('/campgrounds/:id', isLoggedIn, function(req, res){
+    Camp.findByIdAndUpdate(req.params.id, req.body.camp)
+        .then(function(camp){
+            res.redirect('/campgrounds/' + req.params.id);
+        })
+        .catch(function(err){
+            console.log('Update error: ' + err);
+            res.redirect('/campgrounds');
+        });
 });
 
 function isLoggedIn (req, res, next) {

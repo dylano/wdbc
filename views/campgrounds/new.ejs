@@ -8,13 +8,13 @@
             <div class="siteform">
             <form method='POST' action='/campgrounds'>
                 <div class="form-group">
-                    <input class="form-control" type="text" name="siteName" placeholder="site name">
+                    <input class="form-control" type="text" name="camp[name]" placeholder="site name" autofocus>
                 </div>
                 <div class="form-group">
-                        <input class="form-control" type="text" name="siteImage" placeholder="site image URL">
+                        <input class="form-control" type="text" name="camp[image]" placeholder="site image URL">
                 </div>
                 <div class="form-group">
-                        <input class="form-control" type="text" name="description" placeholder="description">
+                        <input class="form-control" type="text" name="camp[description]" placeholder="description">
                 </div>
                 <div class="form-group">
                     <button class="btn btn-default btn-primary btn-block">Add Site</button>
