@@ -1,12 +1,13 @@
 var express = require('express');
 var router = express.Router();
+var mw = require('../middleware');
 
 var Camp = require('../models/camp');
 var Comment = require('../models/comment');
 
 
 // Comments Routes
-router.get('/campgrounds/:id/comments/new', isLoggedIn, function (req, res) {
+router.get('/campgrounds/:id/comments/new', mw.isLoggedIn, function (req, res) {
     Camp.findById(req.params.id)
         .then(function (camp) {
             res.render('comments/new', { camp: camp });
@@ -16,7 +17,7 @@ router.get('/campgrounds/:id/comments/new', isLoggedIn, function (req, res) {
         });
 });
 
-router.post('/campgrounds/:id/comments', isLoggedIn, function (req, res) {
+router.post('/campgrounds/:id/comments', mw.isLoggedIn, function (req, res) {
     Comment.create(req.body.comment)
         .then(function (comment) {
             comment.author.id = req.user._id;
@@ -38,7 +39,7 @@ router.post('/campgrounds/:id/comments', isLoggedIn, function (req, res) {
         })
 });
 
-router.get('/campgrounds/:id/comments/:comid/edit', isLoggedIn, verifyOwnership, function (req, res) {
+router.get('/campgrounds/:id/comments/:comid/edit', mw.isLoggedIn, mw.verifyCommentOwnership, function (req, res) {
     Camp.findById(req.params.id)
         .then(function (camp) {
             Comment.findById(req.params.comid)
@@ -52,7 +53,7 @@ router.get('/campgrounds/:id/comments/:comid/edit', isLoggedIn, verifyOwnership,
         });
 });
 
-router.put('/campgrounds/:id/comments/:comid', isLoggedIn, verifyOwnership, function (req, res) {
+router.put('/campgrounds/:id/comments/:comid', mw.isLoggedIn, mw.verifyCommentOwnership, function (req, res) {
     Comment.findByIdAndUpdate(req.params.comid, req.body.comment)
         .then(function(comment){
             res.redirect('/campgrounds/' + req.params.id);
@@ -63,7 +64,7 @@ router.put('/campgrounds/:id/comments/:comid', isLoggedIn, verifyOwnership, func
         })
 });
 
-router.delete('/campgrounds/:id/comments/:comid', isLoggedIn, verifyOwnership, function(req, res){
+router.delete('/campgrounds/:id/comments/:comid', mw.isLoggedIn, mw.verifyCommentOwnership, function(req, res){
     Comment.findByIdAndRemove(req.params.comid)
         .then(function(camp){
             res.redirect('/campgrounds/' + req.params.id);
@@ -73,34 +74,6 @@ router.delete('/campgrounds/:id/comments/:comid', isLoggedIn, verifyOwnership, f
             res.redirect('/campgrounds/' + req.params.id);
         })
 });
-
-// middleware
-function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.redirect('/login');
-}
-
-function verifyOwnership (req, res, next) {
-    if(req.isAuthenticated()){
-        Comment.findById(req.params.comid)
-            .then(function(comment){
-                if(comment.author.id.equals(req.user._id)) {
-                    next();
-                } else {
-                    console.log('user mismatch');
-                    res.redirect('back');
-                }
-            })
-            .catch(function(err){
-                res.redirect('back');
-            });
-    } else {
-        console.log('not authed');
-        res.redirect('back');
-    }
-}
 
 
 module.exports = router;

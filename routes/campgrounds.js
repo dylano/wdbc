@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var mw = require('../middleware');
 
 var Camp = require('../models/camp');
 
@@ -14,7 +15,7 @@ router.get('/campgrounds', function(req, res) {
         });
 });
 
-router.get('/campgrounds/new', isLoggedIn, function(req, res){
+router.get('/campgrounds/new', mw.isLoggedIn, function(req, res){
     res.render("campgrounds/new.ejs");
 });
 
@@ -28,7 +29,7 @@ router.get('/campgrounds/:id', function(req, res){
         });
 });
 
-router.post('/campgrounds', isLoggedIn, function(req, res){
+router.post('/campgrounds', mw.isLoggedIn, function(req, res){
     var newCamp = req.body.camp;
     newCamp.author = {
         id: req.user._id,
@@ -45,7 +46,7 @@ router.post('/campgrounds', isLoggedIn, function(req, res){
         });
 });
 
-router.get('/campgrounds/:id/edit', isLoggedIn, verifyOwnership, function(req, res){
+router.get('/campgrounds/:id/edit', mw.isLoggedIn, mw.verifyCampOwnership, function(req, res){
     var camp = Camp.findById(req.params.id)
         .then(function(camp){
             res.render("campgrounds/edit", {campground: camp});
@@ -56,7 +57,7 @@ router.get('/campgrounds/:id/edit', isLoggedIn, verifyOwnership, function(req, r
         });
 });
 
-router.put('/campgrounds/:id', isLoggedIn, verifyOwnership, function(req, res){
+router.put('/campgrounds/:id', mw.isLoggedIn, mw.verifyCampOwnership, function(req, res){
     Camp.findByIdAndUpdate(req.params.id, req.body.camp)
         .then(function(camp){
             res.redirect('/campgrounds/' + req.params.id);
@@ -67,7 +68,7 @@ router.put('/campgrounds/:id', isLoggedIn, verifyOwnership, function(req, res){
         });
 });
 
-router.delete('/campgrounds/:id', isLoggedIn, verifyOwnership, function(req, res){
+router.delete('/campgrounds/:id', mw.isLoggedIn, mw.verifyCampOwnership, function(req, res){
     Camp.findByIdAndRemove(req.params.id)
         .then(function(camp){
             res.redirect('/campgrounds');
@@ -78,32 +79,5 @@ router.delete('/campgrounds/:id', isLoggedIn, verifyOwnership, function(req, res
         })
 });
 
-// middleware
-function isLoggedIn (req, res, next) {
-    if(req.isAuthenticated()) {
-        return next();
-    }
-    res.redirect('/login');
-}
-
-function verifyOwnership (req, res, next) {
-    if(req.isAuthenticated()){
-        Camp.findById(req.params.id)
-            .then(function(camp){
-                if(camp.author.id.equals(req.user._id)) {
-                    next();
-                } else {
-                    console.log('user mismatch');
-                    res.redirect('back');
-                }
-            })
-            .catch(function(err){
-                res.redirect('back');
-            });
-    } else {
-        console.log('not authed');
-        res.redirect('back');
-    }
-}
 
 module.exports = router;
