@@ -2,7 +2,9 @@
 
     <div class="container">
         <% if(!campground) { %>
-            <h4>Campground does not appear to exist. <a href="/campgrounds/">Return to List</a></h4>
+            <h4>Campground does not appear to exist.
+                <a href="/campgrounds/">Return to List</a>
+            </h4>
             <% } else { %>
 
                 <div class="row">
@@ -26,12 +28,18 @@
                                     <%= campground.description %>
                                 </p>
                                 <p>
-                                    <em>Submitted by <%= campground.author.username %></em>
+                                    <em>Submitted by
+                                        <%= campground.author.username %>
+                                    </em>
                                 </p>
-                                <a href="/campgrounds/<%=campground._id%>/edit" class="btn btn-xs btn-warning">Edit</button></a>
-                                <form class="delete-form" action="/campgrounds/<%=campground._id%>?_method=DELETE" method="POST">
-                                    <button class="btn btn-xs btn-danger">Delete</button>
-                                </form>
+
+                                <% if(currentUser && campground.author.id.equals(currentUser._id)) { %>
+                                    <a href="/campgrounds/<%=campground._id%>/edit" class="btn btn-xs btn-warning">Edit</button>
+                                    </a>
+                                    <form class="delete-form" action="/campgrounds/<%=campground._id%>?_method=DELETE" method="POST">
+                                        <button class="btn btn-xs btn-danger">Delete</button>
+                                    </form>
+                                    <% } %>
                             </div>
                             <div class="well">
                                 <div class="text-right">
@@ -41,12 +49,21 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <% campground.comments.forEach(function(comment) { %>
-                                            <strong><%=comment.author.username%></strong>
+                                            <strong> <%=comment.author.username%> </strong>
+                                            <% if (currentUser && comment.author.id.equals(currentUser._id)) {%>
+                                                <span class="actionlink">
+                                                    <a href="/campgrounds/<%=campground._id%>/comments/<%=comment._id%>/edit" class="btn btn-link btn-xs">Edit</a>
+                                                    |
+                                                    <form class="delete-form" action="/campgrounds/<%=campground._id%>/comments/<%=comment._id%>?_method=DELETE" method="POST">
+                                                        <button class="btn btn-link btn-xs">Delete</button>
+                                                    </form>
+                                                </span>
+                                            <% } %>
                                             <span class="pull-right">3 weeks ago</span>
                                             <p>
                                                 <%= comment.text %>
                                             </p>
-                                            <% }) %>
+                                        <% }) %>
                                     </div>
                                 </div>
                                 <p></p>

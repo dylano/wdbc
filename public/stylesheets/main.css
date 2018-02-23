@@ -24,3 +24,7 @@
 .delete-form {
     display: inline;
 }
+
+.actionlink {
+    font-family: cursive;
+}

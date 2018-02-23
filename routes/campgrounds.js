@@ -45,7 +45,7 @@ router.post('/campgrounds', isLoggedIn, function(req, res){
         });
 });
 
-router.get('/campgrounds/:id/edit', isLoggedIn, function(req, res){
+router.get('/campgrounds/:id/edit', isLoggedIn, verifyOwnership, function(req, res){
     var camp = Camp.findById(req.params.id)
         .then(function(camp){
             res.render("campgrounds/edit", {campground: camp});
@@ -56,7 +56,7 @@ router.get('/campgrounds/:id/edit', isLoggedIn, function(req, res){
         });
 });
 
-router.put('/campgrounds/:id', isLoggedIn, function(req, res){
+router.put('/campgrounds/:id', isLoggedIn, verifyOwnership, function(req, res){
     Camp.findByIdAndUpdate(req.params.id, req.body.camp)
         .then(function(camp){
             res.redirect('/campgrounds/' + req.params.id);
@@ -67,7 +67,7 @@ router.put('/campgrounds/:id', isLoggedIn, function(req, res){
         });
 });
 
-router.delete('/campgrounds/:id', isLoggedIn, function(req, res){
+router.delete('/campgrounds/:id', isLoggedIn, verifyOwnership, function(req, res){
     Camp.findByIdAndRemove(req.params.id)
         .then(function(camp){
             res.redirect('/campgrounds');
@@ -78,11 +78,32 @@ router.delete('/campgrounds/:id', isLoggedIn, function(req, res){
         })
 });
 
+// middleware
 function isLoggedIn (req, res, next) {
     if(req.isAuthenticated()) {
         return next();
     }
     res.redirect('/login');
+}
+
+function verifyOwnership (req, res, next) {
+    if(req.isAuthenticated()){
+        Camp.findById(req.params.id)
+            .then(function(camp){
+                if(camp.author.id.equals(req.user._id)) {
+                    next();
+                } else {
+                    console.log('user mismatch');
+                    res.redirect('back');
+                }
+            })
+            .catch(function(err){
+                res.redirect('back');
+            });
+    } else {
+        console.log('not authed');
+        res.redirect('back');
+    }
 }
 
 module.exports = router;
