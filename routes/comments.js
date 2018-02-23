@@ -55,21 +55,21 @@ router.get('/campgrounds/:id/comments/:comid/edit', mw.isLoggedIn, mw.verifyComm
 
 router.put('/campgrounds/:id/comments/:comid', mw.isLoggedIn, mw.verifyCommentOwnership, function (req, res) {
     Comment.findByIdAndUpdate(req.params.comid, req.body.comment)
-        .then(function(comment){
+        .then(function (comment) {
             res.redirect('/campgrounds/' + req.params.id);
         })
-        .catch(function(err){
+        .catch(function (err) {
             console.log(err);
             res.redirect('/campgrounds/' + req.params.id);
         })
 });
 
-router.delete('/campgrounds/:id/comments/:comid', mw.isLoggedIn, mw.verifyCommentOwnership, function(req, res){
+router.delete('/campgrounds/:id/comments/:comid', mw.isLoggedIn, mw.verifyCommentOwnership, function (req, res) {
     Comment.findByIdAndRemove(req.params.comid)
-        .then(function(camp){
+        .then(function (camp) {
             res.redirect('/campgrounds/' + req.params.id);
         })
-        .catch(function(err){
+        .catch(function (err) {
             console.log('Remove error: ' + err);
             res.redirect('/campgrounds/' + req.params.id);
         })

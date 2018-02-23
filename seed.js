@@ -13,33 +13,33 @@ var seedCamps = [
 function seedDB() {
     // Clear data
     console.log('Removing camps');
-    Camp.remove({}) 
-    .then(function(){
-        console.log('Removing comments');
-        Comment.remove({});
-    })
-    // -- camp creation removed for now, need to set current user context first
-    // .then(function() {
-    //     seedCamps.forEach(function (seed) {
-    //         Camp.create(seed)
-    //             .then(function (camp) {
-    //                 console.log("Added " + camp.name);
-    //                 Comment.create({ 
-    //                     text: '5 stars, would camp again',
-    //                     author: 'The EJBDs'
-    //             })
-    //             .then(function(comment){
-    //                 console.log('Created comment for ' + camp.name);
-    //                 camp.comments.push(comment._id);
-    //                 camp.save();
-    //             })
-    //         }) 
-    //     });
-    // })
-            
-    .catch(function (err) {
-        console.log(err);
-    });
+    Camp.remove({})
+        .then(function () {
+            console.log('Removing comments');
+            Comment.remove({});
+        })
+        // -- camp creation removed for now, need to set current user context first
+        // .then(function() {
+        //     seedCamps.forEach(function (seed) {
+        //         Camp.create(seed)
+        //             .then(function (camp) {
+        //                 console.log("Added " + camp.name);
+        //                 Comment.create({ 
+        //                     text: '5 stars, would camp again',
+        //                     author: 'The EJBDs'
+        //             })
+        //             .then(function(comment){
+        //                 console.log('Created comment for ' + camp.name);
+        //                 camp.comments.push(comment._id);
+        //                 camp.save();
+        //             })
+        //         }) 
+        //     });
+        // })
+
+        .catch(function (err) {
+            console.log(err);
+        });
 }
 
 module.exports = seedDB;

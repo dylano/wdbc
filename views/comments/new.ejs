@@ -1,21 +1,23 @@
-<% include ../partials/header %> 
+<% include ../partials/header %>
 
-<div class="container">
+    <div class="container">
         <div class="center">
-            <h1>Add comment for <%= camp.name %></h1>
+            <h1>Add comment for
+                <%= camp.name %>
+            </h1>
         </div>
         <div class="row">
             <div class="siteform">
-            <form method='POST' action='/campgrounds/<%=camp._id%>/comments'>
-                <div class="form-group">
+                <form method='POST' action='/campgrounds/<%=camp._id%>/comments'>
+                    <div class="form-group">
                         <input class="form-control" type="text" name="comment[text]" placeholder="comment" autofocus>
-                </div>
-                <div class="form-group">
-                    <button class="btn btn-default btn-primary btn-block">Add Comment</button>
-                </div>
-            </form>
-            <a href="/campgrounds/<%=camp._id%>">Or don't</a>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-default btn-primary btn-block">Add Comment</button>
+                    </div>
+                </form>
+                <a href="/campgrounds/<%=camp._id%>">Or don't</a>
+            </div>
         </div>
     </div>
-</div>
-<% include ../partials/footer %>
+    <% include ../partials/footer %>
