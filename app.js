@@ -1,33 +1,36 @@
-var express = require('express'),
-    bodyParser = require('body-parser'),
-    mongoose = require('mongoose'),
-    seedDB = require('./seed.js'),
-    expressSession = require('express-session'),
-    passport = require('passport'),
-    LocalStrategy = require('passport-local'),
-    passportLocalMongoose = require('passport-local-mongoose'),
-    methodOverride = require('method-override');
-
+const express = require("express");
+const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
+const seedDB = require("./seed.js");
+const expressSession = require("express-session");
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
+const methodOverride = require("method-override");
+const User = require("./models/user");
 
 // app config
-var PORT = process.env.PORT || 3000;
-app = express();
-app.use(express.static(__dirname + "/public"));
+const PORT = process.env.PORT || 3000;
+const app = express();
+app.use(express.static(`${__dirname}/public`));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.set("view engine", "ejs");
 
-var dbconnect = process.env.MONGODB_URI || "mongodb://localhost/stuts";
-console.log("Connecting to Mongo: " + dbconnect);
-mongoose.connect(dbconnect);
+const dbconnect = process.env.MONGODB_URI || "mongodb://localhost/stuts";
+console.log(`Connecting to Mongo: ${dbconnect}`);
+mongoose.connect(dbconnect).catch(err => {
+  console.log(`fatal: could not connect to mongo:\n${err}`);
+  process.exit(1);
+});
 
 // Auth / Passport config
-var User = require('./models/user');
-app.use(require('express-session')({
-    secret: 'blue skies at night',
+app.use(
+  expressSession({
+    secret: "blue skies at night",
     resave: false,
     saveUninitialized: false
-}));
+  })
+);
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -37,29 +40,29 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 // Load current user into responses
-app.use(function (req, res, next) {
-    res.locals.currentUser = req.user;
-    next();
+app.use((req, res, next) => {
+  res.locals.currentUser = req.user;
+  next();
 });
 
 // seedDB();
 
 // ROUTES
-app.get('/', function (req, res) {
-    res.render('landing');
+app.get("/", (req, res) => {
+  res.render("landing");
 });
 
-app.use(require('./routes/auth.js'));
-app.use(require('./routes/campgrounds.js'));
-app.use(require('./routes/comments.js'));
+app.use(require("./routes/auth.js"));
+app.use(require("./routes/campgrounds.js"));
+app.use(require("./routes/comments.js"));
 
 // Let's go!
-app.listen(PORT, function () {
-    console.log("Now camping on " + PORT + "...");
+app.listen(PORT, () => {
+  console.log(`Now camping on ${PORT}...`);
 });
 
 module.exports = {
-    sanityTest: function () {
-        return true;
-    }
-}
+  sanityTest() {
+    return true;
+  }
+};
