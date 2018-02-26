@@ -6,6 +6,7 @@ const expressSession = require("express-session");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const methodOverride = require("method-override");
+const flash = require("connect-flash");
 const User = require("./models/user");
 
 // app config
@@ -14,6 +15,7 @@ const app = express();
 app.use(express.static(`${__dirname}/public`));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
+app.use(flash());
 app.set("view engine", "ejs");
 
 const dbconnect = process.env.MONGODB_URI || "mongodb://localhost/stuts";
@@ -39,9 +41,12 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-// Load current user into responses
+// Set up values to be available on all pages
 app.use((req, res, next) => {
   res.locals.currentUser = req.user;
+  res.locals.errorFlash = req.flash("errorFlash");
+  res.locals.successFlash = req.flash("successFlash");
+  res.locals.infoFlash = req.flash("infoFlash");
   next();
 });
 
