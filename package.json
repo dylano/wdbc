@@ -6,6 +6,7 @@
   "scripts": {
     "lint": "eslint '**/*.js' --quiet",
     "test": "mocha --exit || true",
+    "format": "prettier --write '**/*.{js,jsx}'",
     "start": "node app.js"
   },
   "author": "",

@@ -1,8 +1,8 @@
-const assert = require('chai').assert;
-const app = require('../app.js');
+const assert = require("chai").assert;
+const app = require("../app.js");
 
-describe('App', function () {
-    it('must be true', function () {
-        assert.isTrue(app.sanityTest());
-    });
+describe("App", () => {
+  it("must be true", () => {
+    assert.isTrue(app.sanityTest());
+  });
 });
