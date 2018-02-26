@@ -41,6 +41,10 @@ router.post("/campgrounds", mw.isLoggedIn, (req, res) => {
   Camp.create(newCamp)
     .then(camp => {
       console.log(`new camp: ${camp}`);
+      req.flash(
+        "success",
+        `'${camp.name}' has been added. Thanks for the contribution!`
+      );
       res.redirect("/campgrounds");
     })
     .catch(err => {
@@ -71,6 +75,7 @@ router.put(
   (req, res) => {
     Camp.findByIdAndUpdate(req.params.id, req.body.camp)
       .then(() => {
+        req.flash("success", "Update saved.");
         res.redirect(`/campgrounds/${req.params.id}`);
       })
       .catch(err => {
@@ -87,6 +92,7 @@ router.delete(
   (req, res) => {
     Camp.findByIdAndRemove(req.params.id)
       .then(() => {
+        req.flash("success", "Campsite removed.");
         res.redirect("/campgrounds");
       })
       .catch(err => {

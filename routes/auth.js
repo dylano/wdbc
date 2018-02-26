@@ -13,10 +13,11 @@ router.post("/register", (req, res) => {
   const newUser = new User({ username: req.body.username });
   User.register(newUser, req.body.password, err => {
     if (err) {
-      console.log(err);
-      return res.render("register");
+      req.flash("error", err.message);
+      res.redirect("register");
     }
     passport.authenticate("local")(req, res, () => {
+      req.flash("success", `Welcome to the team, ${newUser.username}!`);
       res.redirect("/campgrounds");
     });
   });
@@ -30,12 +31,14 @@ router.post(
   "/login",
   passport.authenticate("local", {
     successRedirect: "/campgrounds",
-    failureRedirect: "/register"
+    failureRedirect: "/login",
+    failureFlash: true
   })
 );
 
 router.get("/logout", (req, res) => {
   req.logout();
+  req.flash("success", "See you next time!");
   res.redirect("/");
 });
 

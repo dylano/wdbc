@@ -44,9 +44,9 @@ passport.deserializeUser(User.deserializeUser());
 // Set up values to be available on all pages
 app.use((req, res, next) => {
   res.locals.currentUser = req.user;
-  res.locals.errorFlash = req.flash("errorFlash");
-  res.locals.successFlash = req.flash("successFlash");
-  res.locals.infoFlash = req.flash("infoFlash");
+  res.locals.errorFlash = req.flash("error");
+  res.locals.successFlash = req.flash("success");
+  res.locals.infoFlash = req.flash("info");
   next();
 });
 

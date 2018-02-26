@@ -26,6 +26,7 @@ router.post("/campgrounds/:id/comments", mw.isLoggedIn, (req, res) => {
         .then(campground => {
           campground.comments.push(comment._id);
           campground.save();
+          req.flash("success", "Comment saved. Thanks!");
           res.redirect(`/campgrounds/${campground._id}`);
         })
         .catch(err => {
@@ -63,6 +64,7 @@ router.put(
   (req, res) => {
     Comment.findByIdAndUpdate(req.params.comid, req.body.comment)
       .then(() => {
+        req.flash("success", "Comment updated.");
         res.redirect(`/campgrounds/${req.params.id}`);
       })
       .catch(err => {
@@ -79,6 +81,7 @@ router.delete(
   (req, res) => {
     Comment.findByIdAndRemove(req.params.comid)
       .then(() => {
+        req.flash("success", "Comment removed.");
         res.redirect(`/campgrounds/${req.params.id}`);
       })
       .catch(err => {

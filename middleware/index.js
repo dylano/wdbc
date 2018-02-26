@@ -7,6 +7,7 @@ middleware.isLoggedIn = (req, res, next) => {
   if (req.isAuthenticated()) {
     return next();
   }
+  req.flash("error", "Please login first.");
   res.redirect("/login");
 };
 
@@ -17,7 +18,7 @@ middleware.verifyCampOwnership = (req, res, next) => {
         if (camp.author.id.equals(req.user._id)) {
           next();
         } else {
-          console.log("user mismatch");
+          req.flash("error", "Sorry, you don't have permission for that.");
           res.redirect("back");
         }
       })
@@ -25,7 +26,6 @@ middleware.verifyCampOwnership = (req, res, next) => {
         res.redirect("back");
       });
   } else {
-    console.log("not authed");
     res.redirect("back");
   }
 };
@@ -37,7 +37,7 @@ middleware.verifyCommentOwnership = (req, res, next) => {
         if (comment.author.id.equals(req.user._id)) {
           next();
         } else {
-          console.log("user mismatch");
+          req.flash("error", "Sorry, you don't have permission for that.");
           res.redirect("back");
         }
       })
