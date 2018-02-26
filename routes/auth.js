@@ -11,7 +11,7 @@ router.get("/register", (req, res) => {
 
 router.post("/register", (req, res) => {
   const newUser = new User({ username: req.body.username });
-  User.register(newUser, req.body.password, (err, user) => {
+  User.register(newUser, req.body.password, err => {
     if (err) {
       console.log(err);
       return res.render("register");

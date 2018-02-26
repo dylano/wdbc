@@ -21,7 +21,7 @@ middleware.verifyCampOwnership = (req, res, next) => {
           res.redirect("back");
         }
       })
-      .catch(err => {
+      .catch(() => {
         res.redirect("back");
       });
   } else {
@@ -41,7 +41,7 @@ middleware.verifyCommentOwnership = (req, res, next) => {
           res.redirect("back");
         }
       })
-      .catch(err => {
+      .catch(() => {
         res.redirect("back");
       });
   } else {
